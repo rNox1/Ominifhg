@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigma Inicial</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 30%; /* Ajustável para celulares e desktops */
+            height: auto;
+            margin: 0 10px;
+        }
+        .indicator {
+            width: 5vw; /* Baseado na largura da tela */
+            height: 5vw;
+            max-width: 30px; /* Limite máximo para desktops */
+            max-height: 30px;
+            border-radius: 50%;
+            display: none; /* Inicialmente invisível */
+        }
+        .dot {
+            background-color: red; /* Ponto - vermelho */
+        }
+        .dash {
+            background-color: blue; /* Traço - azul */
+        }
+        input {
+            background-color: black;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            border-bottom: 2px solid white;
+            width: 80%; /* Ajustável para telas menores */
+            max-width: 300px;
+            text-align: center;
+            outline: none;
+        }
+        .hidden-message {
+            color: rgba(0, 0, 0, 0); /* Cor invisível no fundo preto */
+            font-size: 1em;
+            position: absolute;
+            top: 5%; /* Posição superior da tela */
+            right: 5%; /* Posição à direita da tela */
+            font-weight: bold;
+        }
+
+        /* Estilo para a inversão da tela */
+        body.inverted .hidden-message {
+            color: white; /* Quando a tela é invertida, a cor muda para visível */
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <span class="indicator dot" id="morseDot"></span>
+        <img src="logo.png" alt="Logo" class="logo">
+        <span class="indicator dash" id="morseDash"></span>
+    </div>
+    <p>Me mostre que você é digno de começar esse jogo</p>
+    <input type="text" id="userInput" placeholder="Digite a resposta..." autofocus>
+
+    <!-- Mensagem oculta -->
+    <p class="hidden-message">त्वं अद्यापि न अवगच्छसि</p>
+    
+    <script>
+        const morseSequence = [
+            ".-.", // R
+            ".",   // E
+            ".-",  // A
+            ".-..", // L
+            "..",  // I
+            "-..", // D
+            ".-",  // A
+            "-..", // D
+            "."    // E
+        ];
+
+        let currentIndex = 0;
+        let charIndex = 0;
+
+        const dotElement = document.getElementById("morseDot");
+        const dashElement = document.getElementById("morseDash");
+        const inputElement = document.getElementById("userInput");
+
+        function showIndicator(type) {
+            if (type === "dot") {
+                dotElement.style.display = "inline-block";
+                dashElement.style.display = "none";
+            } else if (type === "dash") {
+                dotElement.style.display = "none";
+                dashElement.style.display = "inline-block";
+            } else {
+                dotElement.style.display = "none";
+                dashElement.style.display = "none";
+            }
+        }
+
+        function playMorse() {
+            if (currentIndex >= morseSequence.length) {
+                currentIndex = 0;
+                setTimeout(playMorse, 1100); // Pausa longa entre repetições
+                return;
+            }
+
+            const currentCode = morseSequence[currentIndex];
+            if (charIndex < currentCode.length) {
+                const char = currentCode[charIndex];
+                if (char === ".") {
+                    showIndicator("dot");
+                    setTimeout(() => {
+                        showIndicator();
+                        charIndex++;
+                        setTimeout(playMorse, 250); // Pausa curta entre caracteres
+                    }, 250); // Duração do ponto
+                } else if (char === "-") {
+                    showIndicator("dash");
+                    setTimeout(() => {
+                        showIndicator();
+                        charIndex++;
+                        setTimeout(playMorse, 250); // Pausa curta entre caracteres
+                    }, 750); // Duração do traço
+                }
+            } else {
+                charIndex = 0;
+                currentIndex++;
+                setTimeout(playMorse, 750); // Pausa entre letras
+            }
+        }
+
+        function checkAnswer() {
+            const userAnswer = inputElement.value.trim().toLowerCase();
+            if (userAnswer === "realidade") {
+                window.location.href = "d2.html"; // Troque para a próxima página
+            }
+        }
+
+        inputElement.addEventListener("input", checkAnswer);
+
+        playMorse(); // Inicia o Morse
+    </script>
+</body>
+</html>
