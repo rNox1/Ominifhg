@@ -1,92 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
+<cabeça>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ficha de Personagem - Omnipotentia</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.min.css">
-  <style>
-    /* Estilos Gerais */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #1e1e1e;
-      color: #f1f1f1;
-      margin: 0;
-      padding: 2rem;
+  <meta nome="viewport" conteúdo="width=device-width, initial-scale=1.0" />
+  <título>Ficha de Personagem - Omnipotentia</título>
+  <link rel="folha de estilo" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.min.css">
+  <estilo>
+ /* Estilos Gerais */
+ corpo {
+ fonte-família: 'IU Segoe', Tahoma, Genebra, Verdana, sans-serif;
+ fundo-cor: #1e1e1e;
+ cor: #f1f1f1;
+ margem: 0;
+ preenchimento: 2rem;
     }
-    .ficha-container {
-      max-width: 900px;
-      margin: 0 auto;
-      background-color: #2c2c2c;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 0 10px rgba(255, 136, 0, 0.3);
+ .ficha-contêiner {
+ larga máxima: 900px;
+ margem: 0 auto;
+ fundo-cor: #2c2c2c;
+ raio fronteiriço: 12px;
+ preenchimento: 2rem;
+ caixa-sombra: 0 0 10px rgba(255, 136, 0, 0,3);
     }
-    .campo, .campo-inline {
-      margin-bottom: 1rem;
+ .campo, .campo-inline {
+ margem inferior: 1rem;
     }
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 0.25rem;
+ etiqueta {
+ exibição: bloquear;
+ peso da fonte: ousado;
+ margem inferior: 0,25rem;
     }
-    input[type="text"], input[type="number"], textarea {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: none;
-      background-color: #3c3c3c;
-      color: #fff;
+ entrada[tipo="texto"], entrada[tipo="número"], área de texto {
+ larga: 100%;
+ preenchimento: 0,5rem;
+ raio fronteiriço: 6px;
+ fronteira: nenhum;
+ fundo-cor: #3c3c3c;
+ cor: #fff;
     }
-    textarea {
-      resize: vertical;
+ área de texto {
+ redimensionar: vertical;
     }
-    .grid-2, .grid-3, .grid-4 {
-      display: grid;
-      gap: 1rem;
+ .grau-2, .grau-3, .grau 4 {
+ exibição: grau;
+ lacuna: 1o;
     }
-    .grid-2 {
-      grid-template-columns: repeat(2, 1fr);
+ .grau-2 {
+ grau-modelo-colunas: repetir(2, 1fr);
     }
-    .grid-3 {
-      grid-template-columns: repeat(3, 1fr);
+ .grau-3 {
+ grau-modelo-colunas: repetir(3, 1fr);
     }
-    .grid-4 {
-      grid-template-columns: repeat(4, 1fr);
+ .nota 4 {
+ grau-modelo-colunas: repetir(4, 1fr);
     }
-    h2 {
-      border-bottom: 1px solid #444;
-      padding-bottom: 0.5rem;
-      margin-bottom: 1rem;
-      color: #ffa500;
+ h2 {
+ borda inferior: 1 px sólido #444;
+ preenchimento-inferior: 0,5rem;
+ margem inferior: 1rem;
+ cor: #ffa500;
     }
-    /* Logo */
-    .logo-container {
-      text-align: center;
-      margin-bottom: 1.5rem;
+ /* Logotipo */
+ .contentor-logotipo {
+ alinhamento de texto: centro;
+ margem inferior: 1,5 rem;
     }
-    .logo-container img {
-      max-width: 200px;
-      height: auto;
+ .logo-container img {
+ larga máxima: 400px;
+ alta: automático;
     }
-    /* Seção de Informações Básicas com Foto integrada */
-    .info-basicas {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      align-items: center;
+ /* Seção de Informações Básicas com Foto integrada */
+ .info-basicas {
+ exibição: flex;
+ intervalo: 1,5m;
+ margem inferior: 2 rem;
+ alinha-itens: centro;
     }
-    .foto-container {
-      flex: 0 0 150px;
-      text-align: center;
+ .foto-contêiner {
+ flex: 0 0 150px;
+ alinhamento de texto: centro;
     }
-    .foto-container img {
-      max-width: 150px;
-      border-radius: 10px;
-      display: none;
+ .foto-container img {
+ larga máxima: 150px;
+ raio de borda: 10px;
+ exibição: nenhum;
     }
-    .foto-container button {
-      padding: 0.5rem 1rem;
+ botão.foto-container {
+ estofamento: 0,5rem 1rem;
       border: none;
       border-radius: 8px;
       background-color: #ff6600;
