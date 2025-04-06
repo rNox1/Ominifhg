@@ -66,7 +66,7 @@
       margin-bottom: 1.5rem;
     }
     .logo-container img {
-      max-width: 600px;
+      max-width: 300px;
       height: auto;
     }
     /* Seção de Informações Básicas com Foto integrada */
@@ -75,6 +75,7 @@
       gap: 1.5rem;
       margin-bottom: 2rem;
       align-items: center;
+      flex-wrap: wrap;
     }
     .foto-container {
       flex: 0 0 150px;
@@ -97,6 +98,7 @@
     }
     .info-basicas .dados {
       flex: 1;
+      min-width: 250px;
     }
     /* Status com valores acima das barras */
     .status-group {
@@ -112,7 +114,7 @@
     .status-input-group span {
       font-weight: bold;
     }
-    /* Botões de incremento para status */
+    /* Botões de incremento para status e demais inputs */
     .input-group {
       display: flex;
       align-items: center;
@@ -283,6 +285,17 @@
     }
     .modal-buttons .btn-confirmar { background-color: #ff6600; color: #1e1e1e; }
     .modal-buttons .btn-cancelar { background-color: #777; color: #fff; }
+    
+    /* Media Query para Mobile */
+    @media (max-width: 600px) {
+      .grid-3, .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .info-basicas {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
@@ -801,12 +814,15 @@
       document.getElementById("barra-" + tipo).style.width = perc + "%";
       document.getElementById("barra-" + tipo).setAttribute("data-valor", atual + "/" + max);
     }
-    // Adiciona eventos aos inputs de status
-    ["pv", "pe", "sa"].forEach(tipo => {
-      document.getElementById(tipo + "-atual").addEventListener("input", () => updateStatusBar(tipo));
-      document.getElementById(tipo + "-max").addEventListener("input", () => updateStatusBar(tipo));
+    
+    // Adiciona event listeners para os inputs de status após o carregamento do DOM
+    document.addEventListener("DOMContentLoaded", function() {
+      ["pv", "pe", "sa"].forEach(tipo => {
+        document.getElementById(tipo + "-atual").addEventListener("input", () => updateStatusBar(tipo));
+        document.getElementById(tipo + "-max").addEventListener("input", () => updateStatusBar(tipo));
+      });
     });
-
+    
     // Funções para incrementar e decrementar valores
     function increment(id) {
       const input = document.getElementById(id);
@@ -849,7 +865,6 @@
         li.className = "inventario-item";
         li.textContent = item.nome;
         li.onclick = () => abrirModal("visualizar", "bolso", index);
-        // Botão para transferir para Estoque
         const btnTransfer = document.createElement("button");
         btnTransfer.className = "transfer-btn";
         btnTransfer.textContent = "→";
@@ -857,7 +872,6 @@
           e.stopPropagation();
           transferirItem("bolso", index);
         };
-        // Botão para remover item
         const btnRemover = document.createElement("button");
         btnRemover.className = "remover-btn";
         btnRemover.textContent = "X";
@@ -874,7 +888,6 @@
         li.className = "inventario-item";
         li.textContent = item.nome;
         li.onclick = () => abrirModal("visualizar", "estoque", index);
-        // Botão para transferir para Bolso
         const btnTransfer = document.createElement("button");
         btnTransfer.className = "transfer-btn";
         btnTransfer.textContent = "←";
@@ -882,7 +895,6 @@
           e.stopPropagation();
           transferirItem("estoque", index);
         };
-        // Botão para remover item
         const btnRemover = document.createElement("button");
         btnRemover.className = "remover-btn";
         btnRemover.textContent = "X";
@@ -896,7 +908,6 @@
       });
       document.getElementById("carga-atual").textContent = cargaTotal;
     }
-    // Transfere item entre Bolso e Estoque
     function transferirItem(origem, index) {
       if (origem === "bolso") {
         const item = inventarioBolso.splice(index, 1)[0];
@@ -907,7 +918,6 @@
       }
       renderInventario();
     }
-    // Remove item do inventário
     function removerItem(local, index) {
       if (local === "bolso") {
         inventarioBolso.splice(index, 1);
@@ -916,7 +926,6 @@
       }
       renderInventario();
     }
-    // Modal Inline: Abre a janela para adicionar ou visualizar item
     function abrirModal(tipo, local, index = null) {
       const overlay = document.getElementById("modal-overlay");
       const titulo = document.getElementById("modal-titulo");
@@ -928,7 +937,6 @@
       
       if (tipo === "adicionar") {
         titulo.textContent = "Adicionar Item (" + local.toUpperCase() + ")";
-        // Formulário para adicionar item
         const inputNome = document.createElement("input");
         inputNome.placeholder = "Nome do Item";
         inputNome.style.marginBottom = "0.5rem";
@@ -943,7 +951,6 @@
         conteudo.appendChild(inputNome);
         conteudo.appendChild(inputDesc);
         conteudo.appendChild(inputCarga);
-        // Botões
         const btnConfirmar = document.createElement("button");
         btnConfirmar.textContent = "Adicionar";
         btnConfirmar.className = "btn-confirmar";
@@ -981,7 +988,6 @@
         pCarga.textContent = "Carga: " + item.carga;
         conteudo.appendChild(pDesc);
         conteudo.appendChild(pCarga);
-        // Botão para fechar o modal
         const btnFechar = document.createElement("button");
         btnFechar.textContent = "Fechar";
         btnFechar.className = "btn-cancelar";
@@ -992,8 +998,6 @@
     function fecharModal() {
       document.getElementById("modal-overlay").style.display = "none";
     }
-
-    // Funções de salvar e carregar ficha
     function salvarFicha() {
       const ficha = {
         nome: document.getElementById("nome").value,
@@ -1047,7 +1051,7 @@
         artes: document.getElementById("artes").value,
         anotacoes: document.getElementById("anotacoes").value,
         foto: document.getElementById("foto-personagem").src,
-        logo: document.getElementById("logo").src
+        logo: (document.getElementById("logo").src && document.getElementById("logo").src.trim() !== "") ? document.getElementById("logo").src : "logo.png"
       };
       const blob = new Blob([JSON.stringify(ficha)], { type: "application/json" });
       const link = document.createElement("a");
@@ -1085,152 +1089,67 @@
             updateStatusBar("sa");
             document.getElementById("forca").value = ficha.forca || "";
             document.getElementById("destreza").value = ficha.destreza || "";
-            document.getElementById("constituicao").value = ficha.constituicao || "";
-            document.getElementById("inteligencia").value = ficha.inteligencia || "";
-            document.getElementById("sabedoria").value = ficha.sabedoria || "";
-            document.getElementById("carisma").value = ficha.carisma || "";
-            document.getElementById("acrobacia").value = ficha.acrobacia || "";
-            document.getElementById("adestramento").value = ficha.adestramento || "";
-            document.getElementById("atletismo").value = ficha.atletismo || "";
-            document.getElementById("atualidades").value = ficha.atualidades || "";
-            document.getElementById("ciencias").value = ficha.ciencias || "";
-            document.getElementById("crime").value = ficha.crime || "";
-            document.getElementById("diplomacia").value = ficha.diplomacia || "";
-            document.getElementById("enganacao").value = ficha.enganacao || "";
-            document.getElementById("fortitude").value = ficha.fortitude || "";
-            document.getElementById("furtividade").value = ficha.furtividade || "";
-            document.getElementById("iniciativa-pericia").value = ficha.iniciativa_pericia || "";
-            document.getElementById("intimidacao").value = ficha.intimidacao || "";
-            document.getElementById("intuicao").value = ficha.intuicao || "";
-            document.getElementById("investigacao").value = ficha.investigacao || "";
-            document.getElementById("luta").value = ficha.luta || "";
-            document.getElementById("medicina").value = ficha.medicina || "";
-            document.getElementById("ocultismo").value = ficha.ocultismo || "";
-            document.getElementById("percepcao").value = ficha.percepcao || "";
-            document.getElementById("pilotagem").value = ficha.pilotagem || "";
-            document.getElementById("pontaria").value = ficha.pontaria || "";
-            document.getElementById("profissao").value = ficha.profissao || "";
-            document.getElementById("reflexo").value = ficha.reflexo || "";
-            document.getElementById("religiao").value = ficha.religiao || "";
-            document.getElementById("sobrevivencia").value = ficha.sobrevivencia || "";
-            document.getElementById("tatica").value = ficha.tatica || "";
-            document.getElementById("tecnologia").value = ficha.tecnologia || "";
-            document.getElementById("vontade").value = ficha.vontade || "";
-            document.getElementById("defesa").value = ficha.defesa || "";
-            document.getElementById("deslocamento").value = ficha.deslocamento || "";
-            document.getElementById("iniciativa-extra").value = ficha.iniciativa_extra || "";
+            documento.getElementById("constituico").valor = ficha.constituico || "";
+            documento.getElementById("inteligência").valor = ficha.intelecgência || "";
+            documento.getElementById("sabedoria").valor = ficha.sabedoria || "";
+            documento.getElementById("carisma").valor = ficha.carisma || "";
+            documento.getElementById("acrobacia").valor = ficha.acrobacia || "";
+            documento.getElementById("adestramento").valor = ficha.adestramento || "";
+            documento.getElementById("atletismo").valor = ficha.atletismo || "";
+            documento.getElementById("atualidades").valor = ficha.atualidades || "";
+            documento.getElementById("ciências").valor = ficha.ciencias || "";
+            documento.getElementById("crime").valor = ficha.crime || "";
+            documento.getElementById("diplomacia").valor = ficha.diplomacia || "";
+            documento.getElementById("enganacão").valor = ficha.enganacao || "";
+            documento.getElementById("fortitude").valor = ficha.fortaleza || "";
+            documento.getElementById("furtividade").valor = ficha.furtividade || "";
+            documento.getElementById("iniciativa-perícia").valor = ficha.iniciativa_pericia || "";
+            documento.getElementById("intimidacão").valor = ficha.intimidacão || "";
+            documento.getElementById("intuicao").valor = ficha.intuico || "";
+            documento.getElementById("investigacao").valor = ficha.investigação || "";
+            documento.getElementById("luta").valor = ficha.luta || "";
+            documento.getElementById("medicina").valor = ficha.medicina || "";
+            documento.getElementById("ocultismo").valor = ficha.ocultismo || "";
+            documento.getElementById("percepcão").valor = ficha.percepcão || "";
+            documento.getElementById("pilotagem").valor = ficha.pilotagem || "";
+            documento.getElementById("pontaria").valor = ficha.pontaria || "";
+            documento.getElementById("profissao").valor = ficha.profissao || "";
+            documento.getElementById("reflexo").valor = ficha.reflexo || "";
+            documento.getElementById("religião").valor = ficha.religião || "";
+            documento.getElementById("sobrevivência").valor = ficha.sobrevivência || "";
+            documento.getElementById("tática").valor = ficha.tática || "";
+            documento.getElementById("tecnologia").valor = ficha.tecnologia || "";
+            documento.getElementById("vontade").valor = ficha.vontade || "";
+            documento.getElementById("defesa").valor = ficha.defesa || "";
+            documento.getElementById("deslocamento").valor = ficha.deslocamento || "";
+            documento.getElementById("iniciativa-extra").valor = ficha.iniciativa_extra || "";
             inventarioBolso = ficha.inventarioBolso || [];
-            inventarioEstoque = ficha.inventarioEstoque || [];
-            document.getElementById("carga-maxima").value = ficha.cargaMaxima || 100;
-            document.getElementById("habilidades").value = ficha.habilidades || "";
-            document.getElementById("artes").value = ficha.artes || "";
-            document.getElementById("anotacoes").value = ficha.anotacoes || "";
-            if(ficha.foto && !ficha.foto.startsWith("blob:")) {
-              document.getElementById("foto-personagem").src = ficha.foto;
-              document.getElementById("foto-personagem").style.display = "block";
+            inventárioEstoque = ficha.inventárioEstoque || [];
+            documento.getElementById("carga-máxima").valor = ficha.cargaMaxima || 100;
+            documento.getElementById("habilidades").valor = ficha.habilidades || "";
+            documento.getElementById("artes").valor = ficha.artes || "";
+            documento.getElementById("anotacos").valor = ficha.anotacos || "";
+            se (ficha.foto && ficha.foto.aparar() !== "") {
+              documento.getElementById("foto-personagem").src = ficha.foto;
+              documento.getElementById("foto-personagem").estilo.exibição = "bloco";
             }
-            if(ficha.logo && !ficha.logo.startsWith("blob:")) {
-              document.getElementById("logo").src = ficha.logo;
+            se (ficha.logotipo && ficha.logotipo.aparar() !== "") {
+              documento.getElementById("logotipo").src = ficha.logotipo;
             }
-            renderInventario();
-            localStorage.setItem("ultimaFicha", JSON.stringify(ficha));
-          } catch (err) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Erro ao carregar ficha',
-              text: 'O arquivo selecionado não é válido ou está corrompido.'
+            renderizarInventário();
+            localStorage.definir item("ultimaFicha", JSON.rigor(ficha));
+          } pegar (errar) {
+            Swal.fogo({
+              ícone: 'erro',
+              título: 'Erro ao carregar ficha',
+              texto: 'Ó arquivo selecionado não é válido ou está corrompido.'
             });
           }
         };
-        reader.readAsText(file);
+        leitor.leiaAsText(arquivo);
       };
-      input.click();
+      entrada.clique();
     }
-    // Função para atualizar as barras de status com base nos inputs
-    function updateStatusBar(tipo) {
-      const atual = parseInt(document.getElementById(tipo + "-atual").value) || 0;
-      const max = parseInt(document.getElementById(tipo + "-max").value) || 0;
-      const safeMax = max > 0 ? max : 1;
-      const perc = Math.max(0, Math.min(100, (atual / safeMax) * 100));
-      document.getElementById("barra-" + tipo).style.width = perc + "%";
-      document.getElementById("barra-" + tipo).setAttribute("data-valor", atual + "/" + max);
-    }
-    window.addEventListener("beforeunload", () => {
-      salvarFicha();
-    });
-    window.addEventListener("load", () => {
-      if (localStorage.getItem("ultimaFicha")) {
-        const ficha = JSON.parse(localStorage.getItem("ultimaFicha"));
-        document.getElementById("nome").value = ficha.nome || "";
-        document.getElementById("origem").value = ficha.origem || "";
-        document.getElementById("classe").value = ficha.classe || "";
-        document.getElementById("nivel").value = ficha.nivel || "";
-        document.getElementById("pc").value = ficha.pc || "";
-        const pvSplit = ficha.pv.split("/");
-        document.getElementById("pv-atual").value = pvSplit[0];
-        document.getElementById("pv-max").value = pvSplit[1];
-        updateStatusBar("pv");
-        const peSplit = ficha.pe.split("/");
-        document.getElementById("pe-atual").value = peSplit[0];
-        document.getElementById("pe-max").value = peSplit[1];
-        updateStatusBar("pe");
-        const saSplit = ficha.sa.split("/");
-        document.getElementById("sa-atual").value = saSplit[0];
-        document.getElementById("sa-max").value = saSplit[1];
-        updateStatusBar("sa");
-        document.getElementById("forca").value = ficha.forca || "";
-        document.getElementById("destreza").value = ficha.destreza || "";
-        document.getElementById("constituicao").value = ficha.constituicao || "";
-        document.getElementById("inteligencia").value = ficha.inteligencia || "";
-        document.getElementById("sabedoria").value = ficha.sabedoria || "";
-        document.getElementById("carisma").value = ficha.carisma || "";
-        document.getElementById("acrobacia").value = ficha.acrobacia || "";
-        document.getElementById("adestramento").value = ficha.adestramento || "";
-        document.getElementById("atletismo").value = ficha.atletismo || "";
-        document.getElementById("atualidades").value = ficha.atualidades || "";
-        document.getElementById("ciencias").value = ficha.ciencias || "";
-        document.getElementById("crime").value = ficha.crime || "";
-        document.getElementById("diplomacia").value = ficha.diplomacia || "";
-        document.getElementById("enganacao").value = ficha.enganacao || "";
-        document.getElementById("fortitude").value = ficha.fortitude || "";
-        document.getElementById("furtividade").value = ficha.furtividade || "";
-        document.getElementById("iniciativa-pericia").value = ficha.iniciativa_pericia || "";
-        document.getElementById("intimidacao").value = ficha.intimidacao || "";
-        document.getElementById("intuicao").value = ficha.intuicao || "";
-        document.getElementById("investigacao").value = ficha.investigacao || "";
-        document.getElementById("luta").value = ficha.luta || "";
-        document.getElementById("medicina").value = ficha.medicina || "";
-        document.getElementById("ocultismo").value = ficha.ocultismo || "";
-        document.getElementById("percepcao").value = ficha.percepcao || "";
-        document.getElementById("pilotagem").value = ficha.pilotagem || "";
-        document.getElementById("pontaria").value = ficha.pontaria || "";
-        document.getElementById("profissao").value = ficha.profissao || "";
-        document.getElementById("reflexo").value = ficha.reflexo || "";
-        document.getElementById("religiao").value = ficha.religiao || "";
-        document.getElementById("sobrevivencia").value = ficha.sobrevivencia || "";
-        document.getElementById("tatica").value = ficha.tatica || "";
-        document.getElementById("tecnologia").value = ficha.tecnologia || "";
-        document.getElementById("vontade").value = ficha.vontade || "";
-        document.getElementById("defesa").value = ficha.defesa || "";
-        document.getElementById("deslocamento").value = ficha.deslocamento || "";
-        document.getElementById("iniciativa-extra").value = ficha.iniciativa_extra || "";
-        inventarioBolso = ficha.inventarioBolso || [];
-        inventarioEstoque = ficha.inventarioEstoque || [];
-        document.getElementById("carga-maxima").value = ficha.cargaMaxima || 100;
-        document.getElementById("habilidades").value = ficha.habilidades || "";
-        document.getElementById("artes").value = ficha.artes || "";
-        document.getElementById("anotacoes").value = ficha.anotacoes || "";
-        if(ficha.foto && !ficha.foto.startsWith("blob:")) {
-          document.getElementById("foto-personagem").src = ficha.foto;
-          document.getElementById("foto-personagem").style.display = "block";
-        }
-        if(ficha.logo && !ficha.logo.startsWith("blob:")) {
-          document.getElementById("logo").src = ficha.logo;
-        }
-        renderInventario();
-        localStorage.setItem("ultimaFicha", JSON.stringify(ficha));
-      }
-    });
-  </script>
-</body>
+  </roteiro>
+</corpo>
 </html>
