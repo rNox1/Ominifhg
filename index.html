@@ -1,92 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<cabeça>
+<head>
   <meta charset="UTF-8" />
-  <meta nome="viewport" conteúdo="width=device-width, initial-scale=1.0" />
-  <título>Ficha de Personagem - Omnipotentia</título>
-  <link rel="folha de estilo" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.min.css">
-  <estilo>
- /* Estilos Gerais */
- corpo {
- fonte-família: 'IU Segoe', Tahoma, Genebra, Verdana, sans-serif;
- fundo-cor: #1e1e1e;
- cor: #f1f1f1;
- margem: 0;
- preenchimento: 2rem;
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ficha de Personagem - Omnipotentia</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.min.css">
+  <style>
+    /* Estilos Gerais */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+      margin: 0;
+      padding: 2rem;
     }
- .ficha-contêiner {
- larga máxima: 900px;
- margem: 0 auto;
- fundo-cor: #2c2c2c;
- raio fronteiriço: 12px;
- preenchimento: 2rem;
- caixa-sombra: 0 0 10px rgba(255, 136, 0, 0,3);
+    .ficha-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #2c2c2c;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(255, 136, 0, 0.3);
     }
- .campo, .campo-inline {
- margem inferior: 1rem;
+    .campo, .campo-inline {
+      margin-bottom: 1rem;
     }
- etiqueta {
- exibição: bloquear;
- peso da fonte: ousado;
- margem inferior: 0,25rem;
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
     }
- entrada[tipo="texto"], entrada[tipo="número"], área de texto {
- larga: 100%;
- preenchimento: 0,5rem;
- raio fronteiriço: 6px;
- fronteira: nenhum;
- fundo-cor: #3c3c3c;
- cor: #fff;
+    input[type="text"], input[type="number"], textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #3c3c3c;
+      color: #fff;
     }
- área de texto {
- redimensionar: vertical;
+    textarea {
+      resize: vertical;
     }
- .grau-2, .grau-3, .grau 4 {
- exibição: grau;
- lacuna: 1o;
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 1rem;
     }
- .grau-2 {
- grau-modelo-colunas: repetir(2, 1fr);
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
     }
- .grau-3 {
- grau-modelo-colunas: repetir(3, 1fr);
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
     }
- .nota 4 {
- grau-modelo-colunas: repetir(4, 1fr);
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
     }
- h2 {
- borda inferior: 1 px sólido #444;
- preenchimento-inferior: 0,5rem;
- margem inferior: 1rem;
- cor: #ffa500;
+    h2 {
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      color: #ffa500;
     }
- /* Logotipo */
- .contentor-logotipo {
- alinhamento de texto: centro;
- margem inferior: 1,5 rem;
+    /* Logo */
+    .logo-container {
+      text-align: center;
+      margin-bottom: 1.5rem;
     }
- .logo-container img {
- larga máxima: 400px;
- alta: automático;
+    .logo-container img {
+      max-width: 400px;
+      height: auto;
     }
- /* Seção de Informações Básicas com Foto integrada */
- .info-basicas {
- exibição: flex;
- intervalo: 1,5m;
- margem inferior: 2 rem;
- alinha-itens: centro;
+    /* Seção de Informações Básicas com Foto integrada */
+    .info-basicas {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      align-items: center;
     }
- .foto-contêiner {
- flex: 0 0 150px;
- alinhamento de texto: centro;
+    .foto-container {
+      flex: 0 0 150px;
+      text-align: center;
     }
- .foto-container img {
- larga máxima: 150px;
- raio de borda: 10px;
- exibição: nenhum;
+    .foto-container img {
+      max-width: 150px;
+      border-radius: 10px;
+      display: none;
     }
- botão.foto-container {
- estofamento: 0,5rem 1rem;
+    .foto-container button {
+      padding: 0.5rem 1rem;
       border: none;
       border-radius: 8px;
       background-color: #ff6600;
@@ -683,7 +683,7 @@
             <button class="btn-decr" onclick="decrement('vontade')">-</button>
             <button class="btn-incr" onclick="increment('vontade')">+</button>
           </div>
-        </div>        
+        </div>
       </div>
     </div>
 
@@ -1170,67 +1170,67 @@
         document.getElementById("pv-atual").value = pvSplit[0];
         document.getElementById("pv-max").value = pvSplit[1];
         updateStatusBar("pv");
-        const peSplit = ficha.pe.dividido("/");
-        documento.getElementById("pe-atual").valor = peSplit[0];
-        documento.getElementById("pe-máx").valor = peSplit[1];
-        atualizarStatusBar("pe");
-        const saSplit = ficha.sa.dividido("/");
-        documento.getElementById("sa-atual").valor = saSplit[0];
-        documento.getElementById("sa-max").valor = saSplit[1];
-        atualizarStatusBar("sa");
-        documento.getElementById("forca").valor = ficha.forca || "";
-        documento.getElementById("destreza").valor = ficha.destreza || "";
-        documento.getElementById("constituico").valor = ficha.constitucional || "";
-        documento.getElementById("inteligência").valor = ficha.intelecgência || "";
-        documento.getElementById("sabedoria").valor = ficha.sabedoria || "";
-        documento.getElementById("carisma").valor = ficha.carisma || "";
-        documento.getElementById("acrobacia").valor = ficha.acrobacia || "";
-        documento.getElementById("adestramento").valor = ficha.adestramento || "";
-        documento.getElementById("atletismo").valor = ficha.atletismo || "";
-        documento.getElementById("atualidades").valor = ficha.atualidades || "";
-        documento.getElementById("ciências").valor = ficha.ciencias || "";
-        documento.getElementById("crime").valor = ficha.crime || "";
-        documento.getElementById("diplomacia").valor = ficha.diplomacia || "";
-        documento.getElementById("enganacão").valor = ficha.enganacao || "";
-        documento.getElementById("fortitude").valor = ficha.fortaleza || "";
-        documento.getElementById("furtividade").valor = ficha.furtividade || "";
-        documento.getElementById("iniciativa-perícia").valor = ficha.iniciativa_pericia || "";
-        documento.getElementById("intimidacão").valor = ficha.intimidacão || "";
-        documento.getElementById("intuicao").valor = ficha.intuitivo || "";
-        documento.getElementById("investigacao").valor = ficha.investigação || "";
-        documento.getElementById("luta").valor = ficha.luta || "";
-        documento.getElementById("medicina").valor = ficha.medicina || "";
-        documento.getElementById("ocultismo").valor = ficha.ocultismo || "";
-        documento.getElementById("percepcão").valor = ficha.percepcão || "";
-        documento.getElementById("pilotagem").valor = ficha.pilotagem || "";
-        documento.getElementById("pontaria").valor = ficha.pontaria || "";
-        documento.getElementById("profissao").valor = ficha.profissao || "";
-        documento.getElementById("reflexo").valor = ficha.reflexo || "";
-        documento.getElementById("religião").valor = ficha.religião || "";
-        documento.getElementById("sobrevivência").valor = ficha.sobrevivência || "";
-        documento.getElementById("tática").valor = ficha.tática || "";
-        documento.getElementById("tecnologia").valor = ficha.tecnologia || "";
-        documento.getElementById("vontade").valor = ficha.vontade || "";
-        documento.getElementById("defesa").valor = ficha.defesa || "";
-        documento.getElementById("deslocamento").valor = ficha.deslocamento || "";
-        documento.getElementById("iniciativa-extra").valor = ficha.iniciativa_extra || "";
+        const peSplit = ficha.pe.split("/");
+        document.getElementById("pe-atual").value = peSplit[0];
+        document.getElementById("pe-max").value = peSplit[1];
+        updateStatusBar("pe");
+        const saSplit = ficha.sa.split("/");
+        document.getElementById("sa-atual").value = saSplit[0];
+        document.getElementById("sa-max").value = saSplit[1];
+        updateStatusBar("sa");
+        document.getElementById("forca").value = ficha.forca || "";
+        document.getElementById("destreza").value = ficha.destreza || "";
+        document.getElementById("constituicao").value = ficha.constituicao || "";
+        document.getElementById("inteligencia").value = ficha.inteligencia || "";
+        document.getElementById("sabedoria").value = ficha.sabedoria || "";
+        document.getElementById("carisma").value = ficha.carisma || "";
+        document.getElementById("acrobacia").value = ficha.acrobacia || "";
+        document.getElementById("adestramento").value = ficha.adestramento || "";
+        document.getElementById("atletismo").value = ficha.atletismo || "";
+        document.getElementById("atualidades").value = ficha.atualidades || "";
+        document.getElementById("ciencias").value = ficha.ciencias || "";
+        document.getElementById("crime").value = ficha.crime || "";
+        document.getElementById("diplomacia").value = ficha.diplomacia || "";
+        document.getElementById("enganacao").value = ficha.enganacao || "";
+        document.getElementById("fortitude").value = ficha.fortitude || "";
+        document.getElementById("furtividade").value = ficha.furtividade || "";
+        document.getElementById("iniciativa-pericia").value = ficha.iniciativa_pericia || "";
+        document.getElementById("intimidacao").value = ficha.intimidacao || "";
+        document.getElementById("intuicao").value = ficha.intuicao || "";
+        document.getElementById("investigacao").value = ficha.investigacao || "";
+        document.getElementById("luta").value = ficha.luta || "";
+        document.getElementById("medicina").value = ficha.medicina || "";
+        document.getElementById("ocultismo").value = ficha.ocultismo || "";
+        document.getElementById("percepcao").value = ficha.percepcao || "";
+        document.getElementById("pilotagem").value = ficha.pilotagem || "";
+        document.getElementById("pontaria").value = ficha.pontaria || "";
+        document.getElementById("profissao").value = ficha.profissao || "";
+        document.getElementById("reflexo").value = ficha.reflexo || "";
+        document.getElementById("religiao").value = ficha.religiao || "";
+        document.getElementById("sobrevivencia").value = ficha.sobrevivencia || "";
+        document.getElementById("tatica").value = ficha.tatica || "";
+        document.getElementById("tecnologia").value = ficha.tecnologia || "";
+        document.getElementById("vontade").value = ficha.vontade || "";
+        document.getElementById("defesa").value = ficha.defesa || "";
+        document.getElementById("deslocamento").value = ficha.deslocamento || "";
+        document.getElementById("iniciativa-extra").value = ficha.iniciativa_extra || "";
         inventarioBolso = ficha.inventarioBolso || [];
-        inventárioEstoque = ficha.inventárioEstoque || [];
-        documento.getElementById("carga-máxima").valor = ficha.cargaMaxima || 100;
-        documento.getElementById("habilidades").valor = ficha.habilidades || "";
-        documento.getElementById("artes").valor = ficha.artes || "";
-        documento.getElementById("anotacos").valor = ficha.anotacos || "";
-        se(ficha.foto && &!ficha.foto.começa com("blob:")) {
-          documento.getElementById("foto-personagem").src = ficha.foto;
-          documento.getElementById("foto-personagem").estilo.exibição = "bloco";
+        inventarioEstoque = ficha.inventarioEstoque || [];
+        document.getElementById("carga-maxima").value = ficha.cargaMaxima || 100;
+        document.getElementById("habilidades").value = ficha.habilidades || "";
+        document.getElementById("artes").value = ficha.artes || "";
+        document.getElementById("anotacoes").value = ficha.anotacoes || "";
+        if(ficha.foto && !ficha.foto.startsWith("blob:")) {
+          document.getElementById("foto-personagem").src = ficha.foto;
+          document.getElementById("foto-personagem").style.display = "block";
         }
-        se(ficha.logotipo && &!ficha.logotipo.começa com("blob:")) {
-          documento.getElementById("logotipo").src = ficha.logotipo;
+        if(ficha.logo && !ficha.logo.startsWith("blob:")) {
+          document.getElementById("logo").src = ficha.logo;
         }
-        renderizarInventário();
-        localStorage.definir item("ultimaFicha", JSON.rigor(ficha));
+        renderInventario();
+        localStorage.setItem("ultimaFicha", JSON.stringify(ficha));
       }
     });
-  </roteiro>
-</corpo>
+  </script>
+</body>
 </html>
